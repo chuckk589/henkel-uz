@@ -43,7 +43,7 @@ import ORMOptionsProvider from 'src/configs/mikro-orm.config';
       },
     }),
     LoggerModule.forRoot(),
-    ServeStaticModule.forRoot({ rootPath: join(__dirname, './', 'public/assets/') }),
+    ServeStaticModule.forRoot({ rootPath: join(__dirname, './', 'public/') }),
     UserModule,
     LotteryModule,
     CheckModule,
