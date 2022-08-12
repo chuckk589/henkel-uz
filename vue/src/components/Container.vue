@@ -3,7 +3,7 @@
     <v-app-bar app>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <v-toolbar-title>Application</v-toolbar-title>
+      <!-- <v-toolbar-title>Application</v-toolbar-title> -->
     </v-app-bar>
     <v-navigation-drawer permanent v-model="drawer">
       <v-list>
@@ -16,26 +16,45 @@
         </v-list-item>
         <v-list-item to="/checks" value="2" active-color="#1867C0">
           <template v-slot:prepend>
-            <v-icon class="mr-5" icon="mdi-account"></v-icon>
+            <v-icon class="mr-5" icon="mdi-image-area"></v-icon>
           </template>
 
           <v-list-item-title>Чеки</v-list-item-title>
         </v-list-item>
         <v-list-item to="/lottery" value="3" active-color="#1867C0">
           <template v-slot:prepend>
-            <v-icon class="mr-5" icon="mdi-account"></v-icon>
+            <v-icon class="mr-5" icon="mdi-dice-multiple "></v-icon>
           </template>
 
           <v-list-item-title>Розыгрыши</v-list-item-title>
         </v-list-item>
         <v-list-item to="/prizes" value="4" active-color="#1867C0">
           <template v-slot:prepend>
-            <v-icon class="mr-5" icon="mdi-account"></v-icon>
+            <v-icon class="mr-5" icon="mdi-trophy"></v-icon>
           </template>
 
           <v-list-item-title>Призы</v-list-item-title>
         </v-list-item>
+        <v-list-item to="/locales" value="5" active-color="#1867C0">
+          <template v-slot:prepend>
+            <v-icon class="mr-5" icon="mdi-web"></v-icon>
+          </template>
+
+          <v-list-item-title>Локали</v-list-item-title>
+        </v-list-item>
+        <v-list-item to="/notifications" value="6" active-color="#1867C0">
+          <template v-slot:prepend>
+            <v-icon class="mr-5" icon="mdi-web"></v-icon>
+          </template>
+
+          <v-list-item-title>Рассылки</v-list-item-title>
+        </v-list-item>
       </v-list>
+      <template v-slot:append>
+        <div class="pa-2">
+          <v-btn @click="logout" block> Выйти </v-btn>
+        </div>
+      </template>
     </v-navigation-drawer>
     <v-main>
       <v-container fluid>
@@ -57,6 +76,12 @@ export default {
     return {
       drawer: false,
     };
+  },
+  methods: {
+    logout() {
+      localStorage.removeItem('jwt');
+      this.$router.push({ name: 'login' });
+    },
   },
 };
 </script>

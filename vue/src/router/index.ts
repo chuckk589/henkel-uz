@@ -29,6 +29,16 @@ const router = createRouter({
           name: 'prizes',
           component: () => import('../views/Prizes.vue'),
         },
+        {
+          path: 'locales',
+          name: 'locales',
+          component: () => import('../views/Locales.vue'),
+        },
+        {
+          path: 'notifications',
+          name: 'notifications',
+          component: () => import('../views/Notifications.vue'),
+        },
       ],
     },
     {

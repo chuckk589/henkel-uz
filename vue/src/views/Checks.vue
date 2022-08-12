@@ -64,7 +64,6 @@ export default {
       ],
 
       gridApi: null,
-      columnApi: null,
       defaultColDef: {
         flex: 1,
       },
@@ -77,7 +76,6 @@ export default {
   methods: {
     onGridReady(params) {
       this.gridApi = params.api;
-      this.gridColumnApi = params.columnApi;
       this.$http({ method: 'GET', url: `/v1/check/` }).then((res) => {
         this.rowData = res.data;
       });
@@ -86,9 +84,6 @@ export default {
         rowNode.setData(evt);
       });
     },
-  },
-  mounted() {
-    console.log('mounted');
   },
 };
 </script>

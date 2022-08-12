@@ -26,7 +26,7 @@ export default {
         fields: [
           {
             type: 'img',
-            value: `assets/${this.params.data.checkPath}`,
+            value: `${this.params.data.checkPath}`,
             // value: 'https://cdn.vuetifyjs.com/images/parallax/material.jpg',
           },
           {

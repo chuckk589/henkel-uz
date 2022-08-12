@@ -14,7 +14,7 @@
         size="small"
         color="error"
         variant="outlined"
-        >Удалить выбранное</v-btn
+        >Удалить</v-btn
       >
     </div>
     <AgGridVue
@@ -142,7 +142,6 @@ export default {
         },
       },
       gridApi: null,
-      columnApi: null,
       defaultColDef: {
         flex: 1,
       },
@@ -155,7 +154,6 @@ export default {
   methods: {
     onGridReady(params) {
       this.gridApi = params.api;
-      this.gridColumnApi = params.columnApi;
       this.$http({ method: 'GET', url: `/v1/lottery/` }).then((res) => {
         this.rowData = res.data;
       });

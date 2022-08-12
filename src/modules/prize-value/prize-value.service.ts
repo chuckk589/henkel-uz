@@ -1,11 +1,20 @@
 import { EntityManager } from '@mikro-orm/core';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrizeValue } from '../mikroorm/entities/PrizeValue';
+import { CreatePrizeValueDto } from './dto/create-prize-value.dto';
 import { RetrievePrizeValueDto } from './dto/retrieve-prize-value.dto';
 
 @Injectable()
 export class PrizeValueService {
   constructor(private readonly em: EntityManager) {}
+  async create(createPrizeValueDto: CreatePrizeValueDto): Promise<RetrievePrizeValueDto> {
+    const prize = this.em.create(PrizeValue, {
+      qr_payload: createPrizeValueDto.qr_payload,
+      prize: this.em.getReference(PrizeValue, +createPrizeValueDto.prizeId),
+    });
+    await this.em.persistAndFlush(prize);
+    return new RetrievePrizeValueDto(prize);
+  }
   async bulkRemove(ids: number[]) {
     const prizeValues = await this.em.find(PrizeValue, { id: { $in: ids } }, { populate: ['winners'] });
     const withWinners = prizeValues.filter((value) => value.winners.length > 0);

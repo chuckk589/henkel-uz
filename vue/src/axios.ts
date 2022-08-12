@@ -14,15 +14,16 @@ axiosInstance.interceptors.response.use(
     if (error.response.config.url !== '/auth/login') {
       if (error.response.status == 401) {
         router.push('login');
+      } else {
+        emitter.emit('alert', {
+          header: error.message,
+          color: 'error',
+          text:
+            typeof error.response.data.message == 'object'
+              ? error.response.data.message.join('\n')
+              : error.response.data.message,
+        });
       }
-      emitter.emit('alert', {
-        header: error.message,
-        color: 'error',
-        text:
-          typeof error.response.data.message == 'object'
-            ? error.response.data.message.join('\n')
-            : error.response.data.message,
-      });
     }
 
     return Promise.reject(error);

@@ -1,7 +1,7 @@
 <template>
-  <v-row justify="center">
-    <v-dialog v-model="show" fullscreen transition="dialog-bottom-transition">
-      <v-card class="mx-auto" max-width="344">
+  <v-dialog v-model="show" fullscreen transition="dialog-bottom-transition">
+    <v-container class="h-screen bg-white" fluid>
+      <v-card class="h-100 ma-auto d-flex flex-column justify-space-around">
         <v-card-title>{{ payload.header }}</v-card-title>
         <v-card-text>
           <template v-for="(field, index) in payload.fields">
@@ -30,10 +30,9 @@
             />
             <v-img
               v-else-if="field.type == 'img'"
-              class="bg-white"
-              width="300"
+              class="bg-white mb-5"
+              width="500"
               :key="'i' + index"
-              :aspect-ratio="1"
               :src="field.value"
               cover
             ></v-img>
@@ -46,7 +45,7 @@
             />
           </template>
         </v-card-text>
-        <v-card-actions>
+        <v-card-actions class="mt-auto">
           <v-btn
             v-if="!payload.noSave"
             color="primary"
@@ -64,8 +63,8 @@
           >
         </v-card-actions>
       </v-card>
-    </v-dialog>
-  </v-row>
+    </v-container>
+  </v-dialog>
 </template>
 <script>
 export default {

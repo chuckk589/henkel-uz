@@ -23,7 +23,6 @@
     "REJECT_REASON_4": "Sizning unikal: ${check_id} raqam bo'yicha chekingiz qa'bul qilinmadi. Chekdagi barcha ma'lumotlar rasmda aniq ko'rinishi kerak. Agar chek kadrga to'liq sig’masa, uni quyidagi ma’lumotlar ko'rinishi  mumkin bo'lgan tarzda rasmga olishingiz kerak: savdo joyi nomi, sotib olingan sana; 2ta AKTIVIA mahsuloti. Iltimos, chek rasmini talablarga muvofiqligini tekshiring va uni qayta yuboring. Rahmat!",
     "REJECT_REASON_5": "Sizning unikal: ${check_id} raqam bo'yicha chekingiz qa'bul qilinmadi. Aksiyada faqat \"Korzinka\" tarmog'ining cheklari ishtirok etadi. Iltimos, Aksiyada ishtirok etuvchi savdo markazidan bo'lgan chekni yuklang. Tarmoqlar ro'yxatini \"Qoidalar\" bo'limida topishingiz mumkin. Rahmat!",
     "noWinnersYet": "Go'liblar hozircha yo'q",
-    "bulkProgress": "Jami tayinlangan vazifalar: ${total}.\nKo'rib chiqilgan: ${processed}.\nXatolar: ${errors}",
     "notRegistered": "Botni ro'yxatga o'tmasdan ishlatish mumkin emas, iltimos ro'yxatdan o'ting",
     "noPrizes": "Sizda sovrinlar yo'q",
     "participate": "🎯Ishtirok etish",

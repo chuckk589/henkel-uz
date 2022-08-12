@@ -1,10 +1,19 @@
 <template>
   <div>
     <div class="d-flex mb-2">
+      <v-btn
+        @click="addPrize"
+        class="mr-2"
+        size="small"
+        color="success"
+        variant="outlined"
+        >Добавить приз</v-btn
+      >
       <v-btn @click="deletePrize" size="small" color="error" variant="outlined"
         >Удалить выбранное</v-btn
       >
     </div>
+
     <AgGridVue
       style="height: 100vh"
       class="ag-theme-alpine"
@@ -56,7 +65,6 @@ export default {
       ],
 
       gridApi: null,
-      columnApi: null,
       defaultColDef: {
         flex: 1,
       },
@@ -69,7 +77,6 @@ export default {
   methods: {
     onGridReady(params) {
       this.gridApi = params.api;
-      this.gridColumnApi = params.columnApi;
       this.$http({ method: 'GET', url: `/v1/prize-value/` }).then((res) => {
         this.rowData = res.data;
       });
@@ -86,6 +93,30 @@ export default {
             0,
           );
         });
+      });
+      this.$emitter.on('new-prize', (evt) => {
+        setTimeout(() => this.gridApi.applyTransaction({ add: [evt] }), 0);
+      });
+    },
+    addPrize() {
+      this.$emitter.emit('openModal', {
+        url: `/prize-value/`,
+        method: 'POST',
+        header: 'Добавить приз',
+        eventName: 'new-prize',
+        fields: [
+          {
+            label: 'QR code',
+            key: 'qr_payload',
+          },
+          {
+            key: 'prizeId',
+            label: 'Тип приза',
+            type: 'select',
+            value: this.$ctable.prizes[0].value,
+            options: this.$ctable.prizes,
+          },
+        ],
       });
     },
     deletePrize() {

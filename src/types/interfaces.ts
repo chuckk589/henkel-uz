@@ -5,6 +5,7 @@ import { match } from 'src/modules/bot/common/helpers';
 import { ModuleMetadata } from '@nestjs/common';
 import { BotStep } from './enums';
 import { Locale, User } from 'src/modules/mikroorm/entities/User';
+import { Notification } from 'src/modules/mikroorm/entities/Notification';
 import { globalComposer } from 'src/modules/bot/global/global.composer';
 import { Promo } from 'src/modules/mikroorm/entities/Promo';
 import { EntityDTO } from '@mikro-orm/core';
@@ -85,4 +86,10 @@ export interface GrammyBotOptions {
 export interface GrammyBotOptionsAsync extends Pick<ModuleMetadata, 'imports'> {
   useFactory?: (...args: any[]) => Promise<GrammyBotOptions> | GrammyBotOptions;
   inject?: any[];
+}
+export interface QueueEntity {
+  id: number;
+  interval: ReturnType<typeof setInterval>;
+  adminsOnly?: boolean;
+  notification?: Notification;
 }
