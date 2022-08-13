@@ -80,6 +80,7 @@ export default {
         this.rowData = res.data;
       });
       this.$emitter.on('view-check', (evt) => {
+        console.log(evt);
         const rowNode = this.gridApi.getRowNode(evt.id);
         rowNode.setData(evt);
       });
