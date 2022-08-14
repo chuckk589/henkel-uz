@@ -7,7 +7,6 @@ import { StatusService } from './status.service';
   path: 'status',
   version: '1',
 })
-@UseGuards(JwtAuthGuard)
 export class StatusController {
   constructor(private readonly statusService: StatusService) {}
 
@@ -19,6 +18,7 @@ export class StatusController {
   findLocales() {
     return this.statusService.findLocales();
   }
+  @UseGuards(JwtAuthGuard)
   @Put('/locales')
   updateLocales(@Body() updateLocaleDto: UpdateLocaleDto) {
     return this.statusService.updateLocales(updateLocaleDto);
