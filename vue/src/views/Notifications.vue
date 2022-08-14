@@ -4,7 +4,6 @@
       <v-tab value="tab-new">Новая рассылка </v-tab>
       <v-tab value="tab-history"> История </v-tab>
     </v-tabs>
-    <v-spacer></v-spacer>
     <v-window v-model="current">
       <v-window-item value="tab-new">
         <v-card>
@@ -38,9 +37,8 @@
               class="ag-theme-alpine mb-5"
               :column-defs="columnDefsB"
               :default-col-def="defaultColDef"
-              :embed-full-width-rows="true"
-              :animate-rows="true"
-              :suppressCellFocus="true"
+              animateRows
+              suppressCellFocus
               :row-data="rowDataB"
               rowSelection="multiple"
               rowMultiSelectWithClick
@@ -50,6 +48,7 @@
               density="compact"
               label="Добавить изображения"
               accept="image/png, image/jpeg, image/bmp"
+              multiple
               filled
               v-model="files"
               prepend-icon="mdi-camera"
@@ -63,9 +62,8 @@
           class="ag-theme-alpine"
           :column-defs="columnDefs"
           :default-col-def="defaultColDef"
-          :embed-full-width-rows="true"
-          :animate-rows="true"
-          :suppressCellFocus="true"
+          animateRows
+          suppressCellFocus
           :get-row-id="getRowId"
           :row-data="rowData"
           sizeColumnsToFit
@@ -82,9 +80,19 @@
         variant="outlined"
         >Создать</v-btn
       >
-      <v-btn color="primary" size="small" variant="outlined"
-        >Предпросмотр</v-btn
-      >
+      <v-tooltip bottom>
+        <template v-slot:activator="{ props }">
+          <v-btn
+            color="primary"
+            size="small"
+            variant="outlined"
+            v-bind="props"
+            @click="preview"
+            >Предпросмотр</v-btn
+          >
+        </template>
+        <span>Отправить всем администраторам</span>
+      </v-tooltip>
     </v-card-actions>
   </v-card>
 </template>
@@ -115,11 +123,6 @@ export default {
         { field: 'expected', headerName: 'Колво ресипиентов' },
         { field: 'executeAt', headerName: 'Дата рассылки' },
         { field: 'createdAt', headerName: 'Дата создания' },
-        {
-          field: 'action',
-          headerName: '',
-          cellRenderer: 'CheckCell',
-        },
       ],
       columnDefsB: [
         {
@@ -165,14 +168,13 @@ export default {
       text: '',
     };
   },
-  mounted() {
-    this.$http.get('/v1/notification/').then((res) => {
-      this.rowData = res.data || [];
-    });
-  },
   methods: {
     onGridReady(params) {
       this.gridApi = params.api;
+      this.$http.get('/v1/notification/').then((res) => {
+        this.rowData = res.data || [];
+        this.gridApi.setRowData(this.rowData);
+      });
     },
     onGridReadyB(params) {
       this.gridApiB = params.api;
@@ -206,8 +208,25 @@ export default {
     },
     erase() {
       this.text = '';
+      this.files = [];
       this.rowDataB = [];
       this.gridApiB.setRowData(this.rowDataB);
+    },
+    preview() {
+      const formData = new FormData();
+      this.text && formData.append('text', this.text);
+      formData.append('buttons', JSON.stringify(this.rowDataB));
+      for (let i = 0; i < this.files.length; i++) {
+        formData.append('images', this.files[i]);
+      }
+      const headers = { 'Content-Type': 'multipart/form-data' };
+      this.$http.post('/v1/notification/test', formData, headers).then(() => {
+        this.$emitter.emit('alert', {
+          header: 'Готово',
+          color: 'info',
+          text: 'Рассылка запущена',
+        });
+      });
     },
     deleteButton() {
       const selectedRows = this.gridApiB.getSelectedRows();

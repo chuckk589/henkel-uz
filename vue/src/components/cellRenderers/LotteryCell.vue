@@ -101,13 +101,13 @@ export default {
             value: this.params.data.status,
             options: this.$ctable.lottery_statuses,
           },
-          {
-            key: 'prize',
-            label: 'Что разыгрываем',
-            type: 'select',
-            value: this.params.data.prize,
-            options: this.$ctable.prizes,
-          },
+          // {
+          //   key: 'prize',
+          //   label: 'Что разыгрываем',
+          //   type: 'select',
+          //   value: this.params.data.prize,
+          //   options: this.$ctable.prizes,
+          // },
         ],
       });
     },

@@ -8,6 +8,7 @@ export class RetrieveCheckDto {
     this.credentials = check.user.credentials;
     this.phone = check.user.phone;
     this.checkPath = check.path;
+    this.locale = check.user.locale;
     this.createdAt = check.createdAt.toLocaleString();
     this.status = check.status.id.toString();
   }
@@ -16,6 +17,7 @@ export class RetrieveCheckDto {
   credentials: string;
   phone: string;
   status: string;
+  locale: string;
   createdAt: string;
   checkPath: string;
 }

@@ -92,10 +92,7 @@ export class NotificationQueueService {
               caption: notification.text,
               reply_markup: notification.getButtons(),
             })
-            .catch((err) => {
-              errored++;
-              console.log(err);
-            });
+            .catch(() => errored++);
         }
       }
       //no image -> sendMessage

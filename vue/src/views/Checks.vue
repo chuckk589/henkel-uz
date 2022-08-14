@@ -1,18 +1,17 @@
 <template>
   <AgGridVue
-    style="height: 100vh"
     class="ag-theme-alpine"
     :column-defs="columnDefs"
     :default-col-def="defaultColDef"
-    :embed-full-width-rows="true"
-    :animate-rows="true"
-    :suppressCellFocus="true"
+    suppressCellFocus
     :get-row-id="getRowId"
     :row-data="rowData"
     sizeColumnsToFit
-    :animateRows="true"
-    :suppressRowClickSelection="true"
+    animateRows
     @grid-ready="onGridReady"
+    suppressRowClickSelection
+    suppressExcelExport
+    :defaultCsvExportParams="defaultCsvExportParams"
   >
   </AgGridVue>
 </template>
@@ -62,7 +61,7 @@ export default {
           cellRenderer: 'CheckCell',
         },
       ],
-
+      defaultCsvExportParams: null,
       gridApi: null,
       defaultColDef: {
         flex: 1,
@@ -78,12 +77,32 @@ export default {
       this.gridApi = params.api;
       this.$http({ method: 'GET', url: `/v1/check/` }).then((res) => {
         this.rowData = res.data;
+        this.gridApi.setRowData(this.rowData);
       });
       this.$emitter.on('view-check', (evt) => {
-        console.log(evt);
-        const rowNode = this.gridApi.getRowNode(evt.id);
-        rowNode.setData(evt);
+        const index = this.rowData.findIndex((c) => c.id == evt.id);
+        this.rowData[index] = evt;
+        this.gridApi.applyTransaction({ update: [evt] });
       });
+      this.defaultCsvExportParams = {
+        columnKeys: this.columnDefs
+          .filter((c) => c.headerName)
+          .map((c) => c.field),
+        processCellCallback: (params) => {
+          const colDef = params.column.getColDef();
+          if (colDef.valueFormatter) {
+            const valueFormatterParams = {
+              ...params,
+              data: params.node.data,
+              node: params.node,
+              colDef: params.column.getColDef(),
+            };
+            return colDef.valueFormatter(valueFormatterParams);
+          }
+          return params.value;
+        },
+      };
+      this.gridApi.setDomLayout('autoHeight');
     },
   },
 };

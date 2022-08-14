@@ -79,6 +79,7 @@ export default {
       this.gridApi = params.api;
       this.$http({ method: 'GET', url: `/v1/prize-value/` }).then((res) => {
         this.rowData = res.data;
+        this.gridApi.setRowData(this.rowData);
       });
       this.$emitter.on('delete-prize', (ids) => {
         this.$http({
@@ -97,6 +98,7 @@ export default {
       this.$emitter.on('new-prize', (evt) => {
         setTimeout(() => this.gridApi.applyTransaction({ add: [evt] }), 0);
       });
+      this.gridApi.setDomLayout('autoHeight');
     },
     addPrize() {
       this.$emitter.emit('openModal', {
@@ -130,9 +132,6 @@ export default {
         id: ids,
       });
     },
-  },
-  mounted() {
-    console.log('mounted');
   },
 };
 </script>

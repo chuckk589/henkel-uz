@@ -1,12 +1,12 @@
 <template>
   <div>
-    <v-btn
+    <!-- <v-btn
       density="compact"
       class="ma-2"
       variant="text"
       icon="mdi-image-area"
       @click="view"
-    ></v-btn>
+    ></v-btn> -->
     <v-btn
       density="compact"
       class="ma-2"

@@ -18,15 +18,14 @@
       >
     </div>
     <AgGridVue
-      style="height: 100vh"
       class="ag-theme-alpine"
       :column-defs="columnDefs"
       :default-col-def="defaultColDef"
-      :embed-full-width-rows="true"
-      :master-detail="true"
-      :animate-rows="true"
-      :suppressCellFocus="true"
+      masterDetail
+      animateRows
+      suppressCellFocus
       :get-row-id="getRowId"
+      :getContextMenuItems="getContextMenuItems"
       :row-data="rowData"
       sizeColumnsToFit
       :detailCellRendererParams="detailCellRendererParams"
@@ -101,6 +100,8 @@ export default {
       ],
       detailCellRendererParams: {
         detailGridOptions: {
+          suppressCsvExport: true,
+          suppressExcelExport: true,
           suppressCellFocus: true,
           columnDefs: [
             {
@@ -130,7 +131,6 @@ export default {
               field: 'action',
               headerName: '',
               cellRenderer: 'LotteryWinnerCell',
-              suppressFillHandle: true,
             },
           ],
           defaultColDef: {
@@ -156,33 +156,30 @@ export default {
       this.gridApi = params.api;
       this.$http({ method: 'GET', url: `/v1/lottery/` }).then((res) => {
         this.rowData = res.data;
+        this.gridApi.setRowData(this.rowData);
       });
+
       this.$emitter.on('edit-lottery', (evt) => {
-        const rowNode = this.gridApi.getRowNode(evt.id);
-        rowNode.setData(evt);
+        const index = this.rowData.findIndex((c) => c.id == evt.id);
+        this.rowData[index] = evt;
+        this.gridApi.applyTransaction({ update: [evt] });
+        this.gridApi.refreshCells({ force: true });
       });
       this.$emitter.on('edit-winner', (evt) => {
         const row = this.rowData.find((c) =>
           c.winners.find((d) => d.id == evt.id),
         );
-        const index = row.winners.findIndex((c) => c.id == evt.id);
-        row.winners[index] = evt;
-        setTimeout(() => {
-          this.gridApi.applyTransaction({
-            update: [row],
-          });
-        }, 0);
+        row.winners[row.winners.findIndex((c) => c.id == evt.id)] = evt;
+        setTimeout(() => this.gridApi.applyTransaction({ update: [row] }), 0);
       });
       this.$emitter.on('new-lottery', (evt) => {
-        setTimeout(() => this.gridApi.applyTransaction({ add: [evt] }), 0);
+        this.rowData.push(evt);
+        this.gridApi.applyTransaction({ add: [evt] });
       });
       this.$emitter.on('new-winner', (evt) => {
-        let rowNode = this.gridApi.getRowNode(evt.id);
-        rowNode = evt;
-        setTimeout(
-          () => this.gridApi.applyTransaction({ update: [rowNode] }),
-          0,
-        );
+        const index = this.rowData.findIndex((c) => c.id == evt.id);
+        this.rowData[index] = evt;
+        setTimeout(() => this.gridApi.applyTransaction({ update: [evt] }), 0);
       });
       this.$emitter.on('delete-winner', (id) => {
         this.$http({
@@ -194,23 +191,22 @@ export default {
           );
           const index = row.winners.findIndex((c) => c.id == id);
           row.winners.splice(index, 1);
-          setTimeout(() => {
-            this.gridApi.applyTransaction({ update: [row] });
-          }, 0);
+          setTimeout(() => this.gridApi.applyTransaction({ update: [row] }), 0);
         });
       });
       this.$emitter.on('delete-lottery', (id) => {
-        const rowNode = this.gridApi.getRowNode(id);
         this.$http({
           method: 'DELETE',
           url: `/v1/lottery/${id}`,
         }).then(() => {
-          setTimeout(
-            () => this.gridApi.applyTransaction({ remove: [rowNode] }),
-            0,
-          );
+          const index = this.rowData.findIndex((c) => c.id == id);
+          setTimeout(() => {
+            this.gridApi.applyTransaction({ remove: [this.rowData[index]] });
+            this.rowData.splice(index, 1);
+          }, 0);
         });
       });
+      this.gridApi.setDomLayout('autoHeight');
     },
     addLottery() {
       this.$emitter.emit('openModal', {
@@ -249,9 +245,62 @@ export default {
         id: selectedRows[0].id,
       });
     },
-  },
-  mounted() {
-    console.log('mounted');
+    getValueFormatter(key) {
+      return (
+        this.columnDefs.find((c) => c.field == key)?.valueFormatter ||
+        function (value) {
+          return value;
+        }
+      );
+    },
+    getValueFormatterMaster(key) {
+      return (
+        this.detailCellRendererParams.detailGridOptions.columnDefs.find(
+          (c) => c.field == key,
+        )?.valueFormatter ||
+        function (value) {
+          return value;
+        }
+      );
+    },
+    getContextMenuItems() {
+      const gridFormatters = ['createdAt', 'prize'].reduce((sum, cur) => {
+        sum[cur] = this.getValueFormatter(cur);
+        return sum;
+      }, {});
+      const masterFormatters = ['primary', 'confirmed', 'notified'].reduce(
+        (sum, cur) => {
+          sum[cur] = this.getValueFormatterMaster(cur);
+          return sum;
+        },
+        {},
+      );
+      const result = [
+        {
+          name: 'Export CSV',
+          action: () => {
+            const csv =
+              'Id розыгрыша, Дата, Приз, Основной, Подтвержден, Уведомлен, Id чека, Имя, Номер, Сертификат\n' +
+              this.rowData.reduce((sum, cur) => {
+                // eslint-disable-next-line prettier/prettier
+                const header = `${cur.id},${gridFormatters.createdAt({ value: cur.createdAt })},${gridFormatters.prize({ value: cur.prize })}`;
+                cur.winners.forEach((w) => {
+                  // eslint-disable-next-line prettier/prettier
+                  sum = sum + header +`,${masterFormatters.primary({ value: w.primary })},${masterFormatters.confirmed({ value: w.confirmed })},${masterFormatters.notified({ value: w.notified })},${w.fancyId},${w.credentials},${w.phone},${w.prize}\n`;
+                });
+                return sum;
+              }, '');
+            const anchor = document.createElement('a');
+            anchor.href =
+              'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+            anchor.target = '_blank';
+            anchor.download = 'export.csv';
+            anchor.click();
+          },
+        },
+      ];
+      return result;
+    },
   },
 };
 </script>

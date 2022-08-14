@@ -61,7 +61,7 @@ export class WinnerService {
     // await this.em.nativeUpdate(Winner, { id }, { notified: true });
   }
   async update(id: number, updateWinnerDto: UpdateWinnerDto) {
-    const winner = await this.em.findOne(Winner, id, { populate: ['check.user'] });
+    const winner = await this.em.findOne(Winner, id, { populate: ['check.user', 'prize_value'] });
     if (!winner.notified && updateWinnerDto.notified) {
       await this.sendNotification(id);
     }

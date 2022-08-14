@@ -1,19 +1,18 @@
 <template>
   <AgGridVue
-    style="height: 100vh"
     class="ag-theme-alpine"
     :column-defs="columnDefs"
     :default-col-def="defaultColDef"
-    :embed-full-width-rows="true"
-    :animate-rows="true"
-    :suppressCellFocus="true"
+    animateRows
+    suppressCellFocus
     :get-row-id="getRowId"
     :row-data="rowData"
     rowSelection="multiple"
     sizeColumnsToFit
-    :animateRows="true"
-    :suppressRowClickSelection="true"
+    suppressRowClickSelection
     @grid-ready="onGridReady"
+    suppressExcelExport
+    :defaultCsvExportParams="defaultCsvExportParams"
   >
   </AgGridVue>
 </template>
@@ -74,7 +73,7 @@ export default {
           cellRenderer: 'UserCell',
         },
       ],
-
+      defaultCsvExportParams: null,
       gridApi: null,
       defaultColDef: {
         flex: 1,
@@ -91,15 +90,32 @@ export default {
       this.gridApi = params.api;
       this.$http({ method: 'GET', url: `/v1/user/` }).then((res) => {
         this.rowData = res.data;
+        this.gridApi.setRowData(this.rowData);
       });
       this.$emitter.on('edit-user', (evt) => {
         const rowNode = this.gridApi.getRowNode(evt.id);
         rowNode.setData(evt);
       });
+      this.defaultCsvExportParams = {
+        columnKeys: this.columnDefs
+          .filter((c) => c.headerName)
+          .map((c) => c.field),
+        processCellCallback: (params) => {
+          const colDef = params.column.getColDef();
+          if (colDef.valueFormatter) {
+            const valueFormatterParams = {
+              ...params,
+              data: params.node.data,
+              node: params.node,
+              colDef: params.column.getColDef(),
+            };
+            return colDef.valueFormatter(valueFormatterParams);
+          }
+          return params.value;
+        },
+      };
+      this.gridApi.setDomLayout('autoHeight');
     },
-  },
-  mounted() {
-    console.log('mounted');
   },
 };
 </script>

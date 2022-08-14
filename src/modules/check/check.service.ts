@@ -16,9 +16,9 @@ export class CheckService {
   constructor(private readonly em: EntityManager, @Inject(BOT_NAME) private bot: Bot<BotContext>) {}
 
   async findAll(): Promise<RetrieveCheckDto[]> {
-    return (await this.em.find(Check, {}, { populate: ['status.translation.values', 'status.comment.values'] })).map(
-      (check) => new RetrieveCheckDto(check),
-    );
+    return (
+      await this.em.find(Check, {}, { populate: ['user', 'status.translation.values', 'status.comment.values'] })
+    ).map((check) => new RetrieveCheckDto(check));
   }
 
   async update(id: number, updateCheckDto: UpdateCheckDto) {
@@ -39,7 +39,7 @@ export class CheckService {
       });
     }
     if (message) {
-      this.bot.api.sendMessage(check.user.chatId, message, { parse_mode: 'HTML' });
+      this.bot.api.sendMessage(check.user.chatId, message, { parse_mode: 'HTML' }).catch();
     }
     check.status = check_status;
     await this.em.persistAndFlush(check);

@@ -44,7 +44,7 @@
         </v-list-item>
         <v-list-item to="/notifications" value="6" active-color="#1867C0">
           <template v-slot:prepend>
-            <v-icon class="mr-5" icon="mdi-web"></v-icon>
+            <v-icon class="mr-5" icon="mdi-email"></v-icon>
           </template>
 
           <v-list-item-title>Рассылки</v-list-item-title>
