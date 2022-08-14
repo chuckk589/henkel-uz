@@ -22,7 +22,7 @@ export class LotteryService {
     if (!check) {
       throw new HttpException(`Чек с номером ${createWinnerDto.fancyId} не найден`, HttpStatus.BAD_REQUEST);
     }
-    const lottery = await this.em.findOne(Lottery, id, { populate: ['winners.prize_value', 'prize'] });
+    const lottery = await this.em.findOne(Lottery, id, { populate: ['winners.prize_value', 'prize', 'winners.check'] });
     const newWinner = this.em.create(Winner, {
       primary: createWinnerDto.primary,
       check: check,
@@ -44,9 +44,7 @@ export class LotteryService {
           HttpStatus.BAD_REQUEST,
         );
       }
-      const sharedWinner = lottery.winners
-        .toArray()
-        .find((winner) => winner.check.fancyId === createWinnerDto.sharesWith);
+      const sharedWinner = lottery.winners.toArray().find((winner) => winner.id === +createWinnerDto.sharesWith);
       if (!sharedWinner) {
         throw new HttpException('Этого никогда не должно было произойти', HttpStatus.BAD_REQUEST);
       }
@@ -54,7 +52,13 @@ export class LotteryService {
     }
     lottery.winners.add(newWinner);
     await this.em.persistAndFlush(lottery);
-    await wrap(newWinner).init(true, ['check.user', 'prize_value']);
+    // await wrap(newWinner).init(true, ['check.user', 'prize_value']);
+    await wrap(lottery).init(true, [
+      'status.translation.values',
+      'prize.translation.values',
+      'winners.check.user',
+      'winners.prize_value',
+    ]);
     return new RetrieveLotteryDto(lottery);
   }
   async create(createLotteryDto: CreateLotteryDto): Promise<RetrieveLotteryDto> {

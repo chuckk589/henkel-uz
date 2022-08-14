@@ -27,6 +27,7 @@
       :get-row-id="getRowId"
       :getContextMenuItems="getContextMenuItems"
       :row-data="rowData"
+      detailRowAutoHeight
       sizeColumnsToFit
       :detailCellRendererParams="detailCellRendererParams"
       @grid-ready="onGridReady"
@@ -134,6 +135,7 @@ export default {
             },
           ],
           defaultColDef: {
+            sortable: true,
             flex: 1,
           },
         },
@@ -143,6 +145,7 @@ export default {
       },
       gridApi: null,
       defaultColDef: {
+        sortable: true,
         flex: 1,
       },
       getRowId: function (params) {
@@ -180,6 +183,7 @@ export default {
         const index = this.rowData.findIndex((c) => c.id == evt.id);
         this.rowData[index] = evt;
         setTimeout(() => this.gridApi.applyTransaction({ update: [evt] }), 0);
+        this.gridApi.refreshCells({ force: true });
       });
       this.$emitter.on('delete-winner', (id) => {
         this.$http({

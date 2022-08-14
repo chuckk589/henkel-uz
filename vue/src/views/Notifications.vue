@@ -146,6 +146,7 @@ export default {
       gridApi: null,
       gridApiB: null,
       defaultColDef: {
+        sortable: true,
         flex: 1,
       },
       getRowId: function (params) {

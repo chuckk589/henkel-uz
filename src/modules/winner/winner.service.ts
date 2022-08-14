@@ -38,32 +38,32 @@ export class WinnerService {
         })
         .then(() => {
           this.logger.info(`Sent QR code to ${winner.check.user.id} qr_payload: ${winner.prize_value.qr_payload}`);
-        })
-        .catch((err) => {
-          this.logger.error(
-            `Error sending QR code to ${winner.check.user.id} qr_payload: ${winner.prize_value.qr_payload}`,
-            err,
-          );
         });
     } else {
-      await this.bot.api
-        .sendMessage(winner.check.user.chatId, message)
-        .then(() => {
-          this.logger.info(`Sent QR code to ${winner.check.user.id} qr_payload: ${winner.prize_value.qr_payload}`);
-        })
-        .catch((err) => {
-          this.logger.error(
-            `Error sending QR code to ${winner.check.user.id} qr_payload: ${winner.prize_value.qr_payload}`,
-            err,
-          );
-        });
+      await this.bot.api.sendMessage(winner.check.user.chatId, message).then(() => {
+        this.logger.info(`Sent QR code to ${winner.check.user.id} qr_payload: ${winner.prize_value.qr_payload}`);
+      });
     }
-    // await this.em.nativeUpdate(Winner, { id }, { notified: true });
   }
   async update(id: number, updateWinnerDto: UpdateWinnerDto) {
     const winner = await this.em.findOne(Winner, id, { populate: ['check.user', 'prize_value'] });
-    if (!winner.notified && updateWinnerDto.notified) {
-      await this.sendNotification(id);
+    if (!winner.notified && updateWinnerDto.notified === true) {
+      await this.sendNotification(id).catch((err) => {
+        throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
+      });
+    }
+    if (updateWinnerDto.primary === true) {
+      //check if theres another winner with the same prize_value
+      const samePrizeWinner = await this.em.findOne(Winner, {
+        prize_value: winner.prize_value,
+        primary: true,
+      });
+      if (samePrizeWinner) {
+        throw new HttpException(
+          'Данному победителю нельзя выставить статус основной\n - на этот приз уже существует претендент с таким же статусом',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
     }
     winner.confirmed = updateWinnerDto.confirmed;
     winner.notified = updateWinnerDto.notified;

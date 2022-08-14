@@ -76,6 +76,7 @@ export default {
       defaultCsvExportParams: null,
       gridApi: null,
       defaultColDef: {
+        sortable: true,
         flex: 1,
       },
       getRowId: function (params) {
