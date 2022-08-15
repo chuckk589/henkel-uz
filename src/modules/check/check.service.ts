@@ -39,7 +39,7 @@ export class CheckService {
       });
     }
     if (message) {
-      this.bot.api.sendMessage(check.user.chatId, message, { parse_mode: 'HTML' }).catch();
+      this.bot.api.sendMessage(check.user.chatId, message, { parse_mode: 'HTML' }).catch((er) => {});
     }
     check.status = check_status;
     await this.em.persistAndFlush(check);

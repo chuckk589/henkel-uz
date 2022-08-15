@@ -1,7 +1,11 @@
 <template>
-  <v-dialog v-model="show" fullscreen transition="dialog-bottom-transition">
-    <v-container class="h-screen bg-white" fluid>
-      <v-card class="h-100 ma-auto d-flex flex-column justify-space-around">
+  <v-dialog v-model="show" transition="dialog-bottom-transition">
+    <v-container class="bg-white">
+      <v-card
+        class="ma-auto d-flex flex-column justify-space-around"
+        min-width="700px"
+        min-height="700px"
+      >
         <v-card-title>{{ payload.header }}</v-card-title>
         <v-card-text>
           <template v-for="(field, index) in payload.fields">
@@ -32,8 +36,7 @@
               v-else-if="field.type == 'img'"
               class="bg-white mb-5"
               :key="'i' + index"
-              max-width="60%"
-              max-height="60%"
+              max-width="500px"
               aspect-ratio="1"
               :src="field.value"
             ></v-img>

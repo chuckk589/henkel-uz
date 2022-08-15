@@ -31,7 +31,6 @@ export class BotModule {
     });
 
     options.middleware?.map((middleware) => bot.use(middleware));
-    bot.api.setMyCommands([]);
     bot.start();
     return bot;
   }
