@@ -75,6 +75,10 @@ export default {
       rowData: [],
     };
   },
+  beforeUnmount() {
+    this.$emitter.off('delete-prize');
+    this.$emitter.off('new-prize');
+  },
   methods: {
     onGridReady(params) {
       this.gridApi = params.api;

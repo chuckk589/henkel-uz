@@ -31,8 +31,8 @@
             <v-img
               v-else-if="field.type == 'img'"
               class="bg-white mb-5"
-              width="500"
               :key="'i' + index"
+              max-width="60%"
               :src="field.value"
               cover
             ></v-img>

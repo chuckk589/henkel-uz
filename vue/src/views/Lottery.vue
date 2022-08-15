@@ -154,6 +154,14 @@ export default {
       rowData: [],
     };
   },
+  beforeUnmount() {
+    this.$emitter.off('edit-lottery');
+    this.$emitter.off('edit-winner');
+    this.$emitter.off('new-lottery');
+    this.$emitter.off('new-winner');
+    this.$emitter.off('delete-lottery');
+    this.$emitter.off('delete-winner');
+  },
   methods: {
     onGridReady(params) {
       this.gridApi = params.api;

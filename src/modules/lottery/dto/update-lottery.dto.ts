@@ -9,7 +9,4 @@ export class UpdateLotteryDto {
 
   @IsDateString()
   end: Date;
-
-  @IsNumberString()
-  prize: string;
 }

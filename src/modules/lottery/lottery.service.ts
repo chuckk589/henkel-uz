@@ -153,7 +153,6 @@ export class LotteryService {
   async update(id: number, updateLotteryDto: UpdateLotteryDto) {
     const lottery = await this.em.findOne(Lottery, id);
     lottery.status = this.em.getReference(LotteryStatus, Number(updateLotteryDto.status));
-    lottery.prize = this.em.getReference(Prize, Number(updateLotteryDto.prize));
     lottery.start = updateLotteryDto.start;
     lottery.end = updateLotteryDto.end;
     await this.em.persistAndFlush(lottery);

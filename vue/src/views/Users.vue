@@ -85,6 +85,9 @@ export default {
       rowData: [],
     };
   },
+  beforeUnmount() {
+    this.$emitter.off('edit-user');
+  },
   methods: {
     onGridReady(params) {
       this.gridApi = params.api;
@@ -93,6 +96,7 @@ export default {
         this.gridApi.setRowData(this.rowData);
       });
       this.$emitter.on('edit-user', (evt) => {
+        console.log(this.$emitter);
         const rowNode = this.gridApi.getRowNode(evt.id);
         rowNode.setData(evt);
       });

@@ -73,6 +73,9 @@ export default {
       rowData: [],
     };
   },
+  beforeUnmount() {
+    this.$emitter.off('view-check');
+  },
   methods: {
     onGridReady(params) {
       this.gridApi = params.api;

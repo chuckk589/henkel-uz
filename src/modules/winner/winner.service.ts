@@ -37,11 +37,15 @@ export class WinnerService {
           caption: message,
         })
         .then(() => {
-          this.logger.info(`Sent QR code to ${winner.check.user.id} qr_payload: ${winner.prize_value.qr_payload}`);
+          this.logger.info(
+            `Sent QR code to userId: ${winner.check.user.id} checkId: ${winner.check.fancyId} qr_payload: ${winner.prize_value.qr_payload}`,
+          );
         });
     } else {
       await this.bot.api.sendMessage(winner.check.user.chatId, message).then(() => {
-        this.logger.info(`Sent QR code to ${winner.check.user.id} qr_payload: ${winner.prize_value.qr_payload}`);
+        this.logger.info(
+          `Sent QR code to userId: ${winner.check.user.id} checkId: ${winner.check.fancyId} qr_payload: ${winner.prize_value.qr_payload}`,
+        );
       });
     }
   }
@@ -52,7 +56,7 @@ export class WinnerService {
         throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
       });
     }
-    if (updateWinnerDto.primary === true) {
+    if (!winner.primary && updateWinnerDto.primary === true) {
       //check if theres another winner with the same prize_value
       const samePrizeWinner = await this.em.findOne(Winner, {
         prize_value: winner.prize_value,

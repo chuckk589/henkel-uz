@@ -32,8 +32,8 @@ export class globalComposer extends BaseComposer {
             await this.globalService.updateUser(ctx.from.id, { locale: lang as Locale });
             ctx.i18n.locale(lang);
             ctx.session.step = BotStep.resident;
-            //await ctx.editMessageCaption({ caption: ctx.i18n.t('start') + '\n\n' + ctx.i18n.t('askAge') });
-            await ctx.editMessageText(ctx.i18n.t('start') + '\n\n' + ctx.i18n.t('askResidence'));
+            await ctx.editMessageCaption({ caption: ctx.i18n.t('start') + '\n\n' + ctx.i18n.t('askResidence') });
+            //await ctx.editMessageText(ctx.i18n.t('start') + '\n\n' + ctx.i18n.t('askResidence'));
           }),
         );
         break;
@@ -41,8 +41,8 @@ export class globalComposer extends BaseComposer {
       case BotStep.resident: {
         range.text(label({ text: 'yes' }), async (ctx) => {
           ctx.session.step = BotStep.age;
-          // await ctx.editMessageCaption({ caption: ctx.i18n.t('start') + '\n\n' + ctx.i18n.t('askGender') });
-          await ctx.editMessageText(ctx.i18n.t('start') + '\n\n' + ctx.i18n.t('askAge'));
+          await ctx.editMessageCaption({ caption: ctx.i18n.t('start') + '\n\n' + ctx.i18n.t('askAge') });
+          //await ctx.editMessageText(ctx.i18n.t('start') + '\n\n' + ctx.i18n.t('askAge'));
         });
         range.text(label({ text: 'no' }), async (ctx) => {
           ctx.session.step = BotStep.default;
@@ -54,8 +54,8 @@ export class globalComposer extends BaseComposer {
       case BotStep.age: {
         range.text(label({ text: 'yes' }), async (ctx) => {
           ctx.session.step = BotStep.gender;
-          // await ctx.editMessageCaption({ caption: ctx.i18n.t('start') + '\n\n' + ctx.i18n.t('askGender') });
-          await ctx.editMessageText(ctx.i18n.t('start') + '\n\n' + ctx.i18n.t('askGender'));
+          await ctx.editMessageCaption({ caption: ctx.i18n.t('start') + '\n\n' + ctx.i18n.t('askGender') });
+          //await ctx.editMessageText(ctx.i18n.t('start') + '\n\n' + ctx.i18n.t('askGender'));
         });
         range.text(label({ text: 'no' }), async (ctx) => {
           ctx.session.step = BotStep.default;
@@ -70,7 +70,8 @@ export class globalComposer extends BaseComposer {
           range.text(label({ text: gender }), async (ctx) => {
             ctx.session.step = BotStep.promo;
             await this.globalService.updateUser(ctx.from.id, { gender: gender });
-            await ctx.editMessageText(ctx.i18n.t('start') + '\n\n' + ctx.i18n.t('askPromo'));
+            await ctx.editMessageCaption({ caption: ctx.i18n.t('start') + '\n\n' + ctx.i18n.t('askPromo') });
+            //await ctx.editMessageText(ctx.i18n.t('start') + '\n\n' + ctx.i18n.t('askPromo'));
           });
         });
         break;
@@ -82,6 +83,7 @@ export class globalComposer extends BaseComposer {
             await this.globalService.updatePromo(ctx.from.id, promo.id);
             ctx.session.step = BotStep.name;
             ctx.menu.close();
+            await ctx.editMessageCaption({ caption: ctx.i18n.t('start') });
             await ctx.reply(ctx.i18n.t('askName'));
           });
           index % 2 === 0 && range.row();
@@ -101,13 +103,17 @@ export class globalComposer extends BaseComposer {
     if (ctx.session.isRegistered) {
       await ctx.reply(ctx.i18n.t('mainMenu'), { reply_markup: mainKeyboard(ctx) });
     } else {
-      await ctx.replyWithMediaGroup([
-        {
-          type: 'photo',
-          media: new InputFile('./dist/public/assets/henkel.png'),
-        },
-      ]);
-      await ctx.reply(i18n.t('ru', 'start') + '\n\n' + i18n.t('uz', 'start') + '\n\n' + ctx.i18n.t('chooseLang'), {
+      // await ctx.replyWithMediaGroup([
+      //   {
+      //     type: 'photo',
+      //     media: new InputFile('./dist/public/assets/henkel.png'),
+      //   },
+      // ]);
+      // await ctx.reply(i18n.t('ru', 'start') + '\n\n' + i18n.t('uz', 'start') + '\n\n' + ctx.i18n.t('chooseLang'), {
+      //   reply_markup: this.menu,
+      // });
+      await ctx.replyWithPhoto(new InputFile('./dist/public/assets/henkel.png'), {
+        caption: i18n.t('ru', 'start') + '\n\n' + i18n.t('uz', 'start') + '\n\n' + ctx.i18n.t('chooseLang'),
         reply_markup: this.menu,
       });
     }

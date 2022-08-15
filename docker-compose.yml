@@ -26,9 +26,11 @@ services:
       - NODE_ENV=${NODE_ENV}
     volumes:
       - ./src/:/app/src/
+      - static:/app/dist/public/files
     ports:
       - $PORT:$PORT
     stdin_open: true
     tty: true
 volumes: 
     db:
+    static:
