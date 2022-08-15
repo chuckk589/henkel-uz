@@ -34,6 +34,7 @@
               :key="'i' + index"
               max-width="60%"
               max-height="60%"
+              aspect-ratio="1"
               :src="field.value"
             ></v-img>
             <v-text-field
