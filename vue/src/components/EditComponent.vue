@@ -33,8 +33,8 @@
               class="bg-white mb-5"
               :key="'i' + index"
               max-width="60%"
+              max-height="60%"
               :src="field.value"
-              cover
             ></v-img>
             <v-text-field
               v-else
