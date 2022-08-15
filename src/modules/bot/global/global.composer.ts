@@ -104,11 +104,7 @@ export class globalComposer extends BaseComposer {
       await ctx.replyWithMediaGroup([
         {
           type: 'photo',
-          media: new InputFile('./dist/public/assets/activia_ru.png'),
-        },
-        {
-          type: 'photo',
-          media: new InputFile('./dist/public/assets/activia_uz.png'),
+          media: new InputFile('./dist/public/assets/henkel.png'),
         },
       ]);
       await ctx.reply(i18n.t('ru', 'start') + '\n\n' + i18n.t('uz', 'start') + '\n\n' + ctx.i18n.t('chooseLang'), {

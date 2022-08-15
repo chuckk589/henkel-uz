@@ -65,10 +65,10 @@ export class AccountComposer extends BaseComposer {
   @Hears('prizes', 'filter')
   myPrizes = async (ctx: BotContext) => {
     const lotteries = await this.accountService.getUserLotteries(ctx);
-    await ctx.replyWithPhoto(new InputFile(`./dist/public/assets/prizes_${ctx.i18n.locale()}.png`), {
-      caption: ctx.i18n.t('prizesContent'),
-    });
-    await ctx.reply(prizeMessage(ctx, lotteries));
+    // await ctx.replyWithPhoto(new InputFile(`./dist/public/assets/prizes_${ctx.i18n.locale()}.png`), {
+    //   caption: ctx.i18n.t('prizesContent'),
+    // });
+    await ctx.reply(ctx.i18n.t('prizesContent') + '\n\n' + prizeMessage(ctx, lotteries));
   };
 
   @Hears('switchLanguage', 'filter')

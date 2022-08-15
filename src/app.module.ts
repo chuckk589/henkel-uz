@@ -43,7 +43,7 @@ import ORMOptionsProvider from 'src/configs/mikro-orm.config';
         };
       },
     }),
-    LoggerModule.forRoot(),
+    LoggerModule.forRoot({ pinoHttp: { autoLogging: false } }),
     ServeStaticModule.forRoot({ rootPath: join(__dirname, './', 'public/') }),
     UserModule,
     LotteryModule,

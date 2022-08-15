@@ -87,7 +87,6 @@ export default {
   },
   methods: {
     onGridReady(params) {
-      console.log('grid ready');
       this.gridApi = params.api;
       this.$http({ method: 'GET', url: `/v1/user/` }).then((res) => {
         this.rowData = res.data;
