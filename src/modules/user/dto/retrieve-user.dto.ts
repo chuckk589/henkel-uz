@@ -10,7 +10,7 @@ export class RetrieveUserDto {
     this.role = user.role;
     this.phone = user.phone;
     this.createdAt = user.createdAt.toLocaleString();
-    this.promo = user.promo.id.toString();
+    this.promo = user.promo?.id.toString() || '';
     this.registered = user.registered;
   }
   id: string;

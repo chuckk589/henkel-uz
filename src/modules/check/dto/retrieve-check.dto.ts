@@ -5,12 +5,12 @@ export class RetrieveCheckDto {
   constructor(check: Check) {
     this.id = check.id.toString();
     this.fancyId = check.fancyId;
-    this.credentials = check.user.credentials;
+    this.credentials = check.user?.credentials || '';
     this.phone = check.user.phone;
     this.checkPath = check.path;
-    this.locale = check.user.locale;
-    this.createdAt = check.createdAt.toLocaleString();
-    this.status = check.status.id.toString();
+    this.locale = check.user?.locale || '';
+    this.createdAt = check.createdAt?.toLocaleString() || '';
+    this.status = check.status?.id.toString() || '';
   }
   id: string;
   fancyId: string;

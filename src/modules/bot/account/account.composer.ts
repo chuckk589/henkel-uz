@@ -83,7 +83,7 @@ export class AccountComposer extends BaseComposer {
   @Hears('rules', 'filter')
   rules = async (ctx: BotContext) => {
     const url = this.AppConfigService.get('url');
-    await ctx.reply(ctx.i18n.t('getRules', { link: url + `/assets/rules_${ctx.i18n.locale()}.pdf` }), {
+    await ctx.reply(ctx.i18n.t('getRules', { link: url + `/assets/oferta_${ctx.i18n.locale()}.pdf` }), {
       parse_mode: 'HTML',
     });
   };

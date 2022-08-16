@@ -54,6 +54,28 @@
               prepend-icon="mdi-camera"
             ></v-file-input>
           </v-card-content>
+          <v-card-actions class="mt-auto">
+            <v-btn
+              color="primary"
+              size="small"
+              @click="createNotification"
+              variant="outlined"
+              >Создать</v-btn
+            >
+            <v-tooltip bottom>
+              <template v-slot:activator="{ props }">
+                <v-btn
+                  color="primary"
+                  size="small"
+                  variant="outlined"
+                  v-bind="props"
+                  @click="preview"
+                  >Предпросмотр</v-btn
+                >
+              </template>
+              <span>Отправить всем администраторам</span>
+            </v-tooltip>
+          </v-card-actions>
         </v-card>
       </v-window-item>
       <v-window-item value="tab-history">
@@ -72,28 +94,6 @@
         </AgGridVue
       ></v-window-item>
     </v-window>
-    <v-card-actions class="mt-auto">
-      <v-btn
-        color="primary"
-        size="small"
-        @click="createNotification"
-        variant="outlined"
-        >Создать</v-btn
-      >
-      <v-tooltip bottom>
-        <template v-slot:activator="{ props }">
-          <v-btn
-            color="primary"
-            size="small"
-            variant="outlined"
-            v-bind="props"
-            @click="preview"
-            >Предпросмотр</v-btn
-          >
-        </template>
-        <span>Отправить всем администраторам</span>
-      </v-tooltip>
-    </v-card-actions>
   </v-card>
 </template>
 
