@@ -2,7 +2,7 @@
     "start": "70 000 so'mdan boshlab Henkel® mahsulotini xarid qiling! \nChek suratini TG-botga yuklang va haftalik sovrinli o'yinda ishtirok eting!",
     "chooseLang": "Tilni tanlang",
     "checkAccepted": "Rahmat, chek qabul qilindi va moderatsiyaga yuborildi! Arizaning unikal raqami: ${check_id}\nSovrin yutib olganingiz taqdirda bildirishnomalarni o'tkazib yubormaslik uchun, bot bildirishnomalarni o'chirmang.",
-    "getRules": "Aksiya Qoidalari bilan tanishish uchun havolani bosing\n\n",
+    "getRules": "Aksiya Qoidalari bilan tanishish uchun havolani bosing\n\n <a href = '${link}'>Fayl (PDF)</a>",
     "myChecks": "🧾Mening cheklarim",
     "noChecks": "Sizda yuklangan cheklar yo'q",
     "myPrizes": "🎁Mening sovrinlarim",
