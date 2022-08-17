@@ -26,7 +26,7 @@ export class WinnerService {
       { id },
       { populate: ['check.user', 'lottery.prize', 'prize_value'] },
     );
-    const message = i18n.t(winner.check.user.locale, 'PRIZE_WEEKLY_QR', { check_id: winner.check.fancyId });
+    const message = i18n.t(winner.check.user.locale, 'PRIZE_WEEKLY', { check_id: winner.check.fancyId });
     await this.bot.api.sendMessage(winner.check.user.chatId, message).then(() => {
       this.logger.info(`Notification sent to userId: ${winner.check.user.id} checkId: ${winner.check.fancyId} `);
     });
@@ -68,7 +68,7 @@ export class WinnerService {
       { id },
       { populate: ['check.user', 'lottery.prize', 'prize_value'] },
     );
-    const message = i18n.t(winner.check.user.locale, winner.lottery.prize.name, { check_id: winner.check.fancyId });
+    const message = i18n.t(winner.check.user.locale, 'PRIZE_WEEKLY_QR', { check_id: winner.check.fancyId });
     const barCode = await QRCode.toBuffer(winner.prize_value.qr_payload, {
       scale: 15,
     });

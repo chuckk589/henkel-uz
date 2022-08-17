@@ -14,6 +14,7 @@
               :key="'t' + index"
               :label="field.label || field.key"
               :disabled="isFieldActive(field)"
+              :hint="field.hint"
               v-model="field.value"
             />
             <v-select
@@ -21,6 +22,7 @@
               :key="'s' + index"
               :label="field.label || field.key"
               v-model="field.value"
+              :hint="field.hint"
               :disabled="isFieldActive(field)"
               :items="field.options"
             />
@@ -29,6 +31,7 @@
               type="date"
               :key="'d' + index"
               :label="field.label || field.key"
+              :hint="field.hint"
               :disabled="isFieldActive(field)"
               v-model="field.value"
             />
@@ -45,6 +48,7 @@
               :key="'r' + index"
               :label="field.label || field.key"
               :disabled="isFieldActive(field)"
+              :hint="field.hint"
               v-model="field.value"
             />
           </template>

@@ -32,20 +32,6 @@ export default {
     return {};
   },
   methods: {
-    view() {
-      this.$emitter.emit('openModal', {
-        header: 'Просмотр чека',
-        noSave: true,
-        fields: [
-          {
-            //FIXME:
-            type: 'img',
-            // value: this.params.data.checkPath,
-            value: 'https://cdn.vuetifyjs.com/images/parallax/material.jpg',
-          },
-        ],
-      });
-    },
     deleteWinner() {
       this.$emitter.emit('openDialog', {
         header: 'Удалить победителя',
@@ -81,6 +67,7 @@ export default {
           {
             label: 'Подтвержден',
             key: 'confirmed',
+            hint: 'При подтверждении победителя будет выслан QR код',
             type: 'select',
             value: this.params.data.confirmed,
             options: [
@@ -98,6 +85,7 @@ export default {
             label: 'Уведомлен',
             key: 'notified',
             type: 'select',
+            hint: 'При уведомлении будет отправлено сообщение о выигрыше',
             value: this.params.data.notified,
             options: [
               {
