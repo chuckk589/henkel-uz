@@ -57,7 +57,10 @@
       </template>
     </v-navigation-drawer>
     <v-main>
-      <v-container fluid>
+      <v-container
+        fluid
+        style="display: flex; flex-direction: column; height: 100%"
+      >
         <router-view />
       </v-container>
     </v-main>

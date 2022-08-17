@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="h-100">
     <div class="d-flex mb-2">
       <v-btn
         @click="addPrize"
@@ -15,16 +15,16 @@
     </div>
 
     <AgGridVue
-      style="height: 100vh"
       class="ag-theme-alpine"
+      style="height: calc(100% - 30px)"
       :column-defs="columnDefs"
       :default-col-def="defaultColDef"
       :embed-full-width-rows="true"
       :animate-rows="true"
+      pagination
       :suppressCellFocus="true"
       :get-row-id="getRowId"
       :row-data="rowData"
-      sizeColumnsToFit
       :animateRows="true"
       rowSelection="multiple"
       rowMultiSelectWithClick
@@ -103,7 +103,6 @@ export default {
       this.$emitter.on('new-prize', (evt) => {
         setTimeout(() => this.gridApi.applyTransaction({ add: [evt] }), 0);
       });
-      this.gridApi.setDomLayout('autoHeight');
     },
     addPrize() {
       this.$emitter.emit('openModal', {

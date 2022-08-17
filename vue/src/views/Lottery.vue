@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="h-100">
     <div class="d-flex mb-2">
       <v-btn
         @click="addLottery"
@@ -19,16 +19,17 @@
     </div>
     <AgGridVue
       class="ag-theme-alpine"
+      style="height: calc(100% - 30px)"
       :column-defs="columnDefs"
       :default-col-def="defaultColDef"
       masterDetail
+      pagination
       animateRows
       suppressCellFocus
       :get-row-id="getRowId"
       :getContextMenuItems="getContextMenuItems"
       :row-data="rowData"
       detailRowAutoHeight
-      sizeColumnsToFit
       :detailCellRendererParams="detailCellRendererParams"
       @grid-ready="onGridReady"
     >
@@ -218,7 +219,6 @@ export default {
           }, 0);
         });
       });
-      this.gridApi.setDomLayout('autoHeight');
     },
     addLottery() {
       this.$emitter.emit('openModal', {

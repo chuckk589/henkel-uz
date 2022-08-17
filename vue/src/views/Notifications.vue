@@ -88,7 +88,6 @@
           suppressCellFocus
           :get-row-id="getRowId"
           :row-data="rowData"
-          sizeColumnsToFit
           @grid-ready="onGridReady"
         >
         </AgGridVue

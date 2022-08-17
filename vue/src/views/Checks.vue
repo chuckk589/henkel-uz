@@ -6,11 +6,12 @@
     suppressCellFocus
     :get-row-id="getRowId"
     :row-data="rowData"
-    sizeColumnsToFit
     animateRows
+    style="height: 100%"
     @grid-ready="onGridReady"
     suppressRowClickSelection
     suppressExcelExport
+    pagination
     :defaultCsvExportParams="defaultCsvExportParams"
   >
   </AgGridVue>
@@ -106,7 +107,6 @@ export default {
           return params.value;
         },
       };
-      this.gridApi.setDomLayout('autoHeight');
     },
   },
 };

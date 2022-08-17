@@ -65,11 +65,11 @@ export default {
             ],
           },
           {
-            label: 'Подтвержден',
-            key: 'confirmed',
-            hint: 'При подтверждении победителя будет выслан QR код',
+            label: 'Уведомлен',
+            key: 'notified',
             type: 'select',
-            value: this.params.data.confirmed,
+            hint: 'При уведомлении будет отправлено сообщение о выигрыше',
+            value: this.params.data.notified,
             options: [
               {
                 value: true,
@@ -82,11 +82,11 @@ export default {
             ],
           },
           {
-            label: 'Уведомлен',
-            key: 'notified',
+            label: 'Подтвержден',
+            key: 'confirmed',
+            hint: 'При подтверждении победителя будет выслан QR код',
             type: 'select',
-            hint: 'При уведомлении будет отправлено сообщение о выигрыше',
-            value: this.params.data.notified,
+            value: this.params.data.confirmed,
             options: [
               {
                 value: true,

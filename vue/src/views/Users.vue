@@ -8,8 +8,9 @@
     :get-row-id="getRowId"
     :row-data="rowData"
     rowSelection="multiple"
-    sizeColumnsToFit
     suppressRowClickSelection
+    pagination
+    style="height: 100%"
     @grid-ready="onGridReady"
     suppressExcelExport
     :defaultCsvExportParams="defaultCsvExportParams"
@@ -118,7 +119,6 @@ export default {
           return params.value;
         },
       };
-      this.gridApi.setDomLayout('autoHeight');
     },
   },
 };
