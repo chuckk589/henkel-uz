@@ -86,7 +86,7 @@ export class globalComposer extends BaseComposer {
             await ctx.editMessageCaption({ caption: ctx.i18n.t('start') });
             await ctx.reply(ctx.i18n.t('askName'));
           });
-          index % 2 === 0 && range.row();
+          range.row();
         });
         break;
       }
