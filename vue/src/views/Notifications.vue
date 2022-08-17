@@ -7,7 +7,7 @@
     <v-window v-model="current">
       <v-window-item value="tab-new">
         <v-card>
-          <v-card-content>
+          <v-card-text>
             <v-textarea
               v-model="text"
               rows="3"
@@ -53,7 +53,7 @@
               v-model="files"
               prepend-icon="mdi-camera"
             ></v-file-input>
-          </v-card-content>
+          </v-card-text>
           <v-card-actions class="mt-auto">
             <v-btn
               color="primary"
