@@ -8,5 +8,9 @@ export class ConfigSeeder extends Seeder {
       name: 'ADMIN_PASSCODE',
       value: '$2a$12$rok.MCu02SSWKkSuTRhwdudPl4N6QQl0sRRBf1vyTaxLiw14TwR6i',
     });
+    em.create(Config, {
+      name: 'BOT_TOKEN_PROD',
+      value: '1892460280:AAGMm7mrof7DhQN4BTLPWttcqEAaDjroGHI',
+    });
   }
 }
