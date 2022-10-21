@@ -9,8 +9,8 @@ const MikroORMOptions: MikroOrmModuleOptions = {
   entitiesTs: ['./src/modules/mikroorm/entities/'],
   clientUrl: process.env.NODE_ENV === 'development' ? process.env.DB_URL_DEV : process.env.DB_URL,
   seeder: {
-    path: './dist/mikroorm/seeders', // path to the folder with seeders
-    pathTs: './src/mikroorm/seeders', // path to the folder with TS seeders (if used, we should put path to compiled files in `path`)
+    path: './dist/modules/mikroorm/seeders', // path to the folder with seeders
+    pathTs: './src/modules/mikroorm/seeders', // path to the folder with TS seeders (if used, we should put path to compiled files in `path`)
     defaultSeeder: 'ConfigSeeder', // default seeder class name
     glob: '!(*.d).{js,ts}', // how to match seeder files (all .js and .ts files, but not .d.ts)
     emit: 'ts', // seeder generation mode
